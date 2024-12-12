@@ -13,7 +13,8 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    bridge: Bridge;
+    post: Post;
+    faqs: Faq;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -22,7 +23,8 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    bridge: BridgeSelect<false> | BridgeSelect<true>;
+    post: PostSelect<false> | PostSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -132,9 +134,9 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "bridge".
+ * via the `definition` "post".
  */
-export interface Bridge {
+export interface Post {
   id: string;
   title: string;
   rawContent: {
@@ -156,6 +158,18 @@ export interface Bridge {
   thumbnail: string | Media;
   youtubeLink: string;
   htmlContent?: string | null;
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: string;
+  question: string;
+  answer: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -175,8 +189,12 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'bridge';
-        value: string | Bridge;
+        relationTo: 'post';
+        value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: string | Faq;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -284,15 +302,26 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "bridge_select".
+ * via the `definition` "post_select".
  */
-export interface BridgeSelect<T extends boolean = true> {
+export interface PostSelect<T extends boolean = true> {
   title?: T;
   rawContent?: T;
   author?: T;
   thumbnail?: T;
   youtubeLink?: T;
   htmlContent?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
   updatedAt?: T;
   createdAt?: T;
 }

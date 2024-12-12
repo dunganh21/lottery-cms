@@ -1,27 +1,32 @@
-import type { Access, CollectionConfig } from 'payload'
 import { UserRole } from '@/types/User'
-import { IPost } from '@/types/bridge'
 import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
+import type { CollectionConfig } from 'payload'
+import { loggedIn } from './access/loggedIn'
+import { formatSlug } from './hooks/formatSlug'
 
 export const Posts: CollectionConfig = {
-  slug: 'bridge',
+  slug: 'post',
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'rawContent', 'createdAt'],
+
+    livePreview: {
+      url: ({ data }) => {
+        const isHomePage = data.slug === 'home'
+        return `${process.env.NEXT_PUBLIC_SERVER_URL}${!isHomePage ? `/${data.slug}` : ''}`
+      },
+    },
   },
 
   access: {
     // Writers and above can create posts
-    create: ({ req: { user } }) =>
-      user?.role
-        ? [UserRole.Writer, UserRole.Moderator, UserRole.Root].includes(user.role as UserRole)
-        : false,
+    create: loggedIn,
     // Writers can update their own posts, moderators and root can update any
-    update: (({ req: { user }, data }) => {
+    update: ({ req: { user }, data }) => {
       if (!user || !data) return false
       if (user.role === UserRole.Root || user.role === UserRole.Moderator) return true
       return user.role === UserRole.Writer && data.author === user.id
-    }) as Access<IPost>,
+    },
 
     // Only moderators and root can delete posts
     delete: ({ req: { user } }) =>
@@ -37,9 +42,6 @@ export const Posts: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'rawContent',
@@ -70,20 +72,28 @@ export const Posts: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       required: true,
-      admin: {
-        position: 'sidebar',
-      },
     },
     {
       name: 'youtubeLink',
       type: 'text',
       required: true,
-      admin: {
-        position: 'sidebar',
+      validate: (value: any) => {
+        if (!value) return true
+        if (Array.isArray(value)) return false
+        return /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}$/.test(value)
       },
     },
 
     lexicalHTML('rawContent', { name: 'htmlContent', hidden: true, storeInDB: true }),
+    {
+      name: 'slug',
+      type: 'text',
+      hooks: {
+        beforeValidate: [formatSlug('title')],
+      },
+      index: true,
+      label: 'Slug',
+    },
   ],
 
   hooks: {
@@ -101,4 +111,11 @@ export const Posts: CollectionConfig = {
     ],
   },
   timestamps: true,
+  // versions: {
+  //   drafts: {
+  //     autosave: {
+  //       interval: 375,
+  //     },
+  //   },
+  // },
 }

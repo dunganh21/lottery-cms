@@ -8,8 +8,6 @@ export const Users: CollectionConfig = {
   },
 
   access: {
-    // Allow read access to all authenticated users
-    read: ({ req: { user } }) => user?.role === UserRole.Root,
     // Only root admins can create users
     create: ({ req: { user } }) => user?.role === UserRole.Root,
     // Only root admins can update users
