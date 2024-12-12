@@ -15,6 +15,8 @@ export interface Config {
     media: Media;
     post: Post;
     faqs: Faq;
+    tags: Tag;
+    notification: Notification;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +27,8 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     post: PostSelect<false> | PostSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    notification: NotificationSelect<false> | NotificationSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -141,6 +145,7 @@ export interface Post {
   title: string;
   author?: (string | null) | User;
   thumbnail: string | Media;
+  tags?: (string | Tag)[] | null;
   rawContent: {
     root: {
       type: string;
@@ -164,12 +169,33 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  tag: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs".
  */
 export interface Faq {
   id: string;
   question: string;
   answer: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification".
+ */
+export interface Notification {
+  id: string;
+  content: string;
+  pushTime: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -195,6 +221,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'faqs';
         value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: string | Tag;
+      } | null)
+    | ({
+        relationTo: 'notification';
+        value: string | Notification;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -308,6 +342,7 @@ export interface PostSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   thumbnail?: T;
+  tags?: T;
   rawContent?: T;
   youtubeLink?: T;
   htmlContent?: T;
@@ -322,6 +357,25 @@ export interface PostSelect<T extends boolean = true> {
 export interface FaqsSelect<T extends boolean = true> {
   question?: T;
   answer?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  tag?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification_select".
+ */
+export interface NotificationSelect<T extends boolean = true> {
+  content?: T;
+  pushTime?: T;
   updatedAt?: T;
   createdAt?: T;
 }

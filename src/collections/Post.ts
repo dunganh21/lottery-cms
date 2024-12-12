@@ -8,7 +8,7 @@ export const Posts: CollectionConfig = {
   slug: 'post',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'author', 'rawContent', 'createdAt'],
+    defaultColumns: ['title', 'tags', 'rawContent', 'author', 'createdAt'],
 
     livePreview: {
       url: ({ data }) => {
@@ -63,6 +63,13 @@ export const Posts: CollectionConfig = {
       relationTo: 'media',
       required: true,
     },
+    {
+      name: 'tags',
+      type: 'relationship',
+      relationTo: 'tags',
+      hasMany: true,
+    },
+
     {
       name: 'rawContent',
       type: 'richText',
