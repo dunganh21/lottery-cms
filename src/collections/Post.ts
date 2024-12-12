@@ -1,8 +1,8 @@
 import { UserRole } from '@/types/User'
 import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
-import { loggedIn } from './access/loggedIn'
 import { formatSlug } from './hooks/formatSlug'
+import { loggedIn } from './access/loggedIn'
 
 export const Posts: CollectionConfig = {
   slug: 'post',
@@ -13,9 +13,11 @@ export const Posts: CollectionConfig = {
     livePreview: {
       url: ({ data }) => {
         const isHomePage = data.slug === 'home'
-        return `${process.env.NEXT_PUBLIC_SERVER_URL}${!isHomePage ? `/${data.slug}` : ''}`
+        const urlReturn = `${process.env.NEXT_PUBLIC_SERVER_URL}${!isHomePage ? `/${data.slug}` : ''}`
+        return urlReturn
       },
     },
+    hideAPIURL: true,
   },
 
   access: {
@@ -43,19 +45,7 @@ export const Posts: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'rawContent',
-      type: 'richText',
-      required: true,
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          // The HTMLConverter Feature is the feature which manages the HTML serializers.
-          // If you do not pass any arguments to it, it will use the default serializers.
-          HTMLConverterFeature({}),
-        ],
-      }),
-    },
+
     {
       name: 'author',
       type: 'relationship',
@@ -74,13 +64,27 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
+      name: 'rawContent',
+      type: 'richText',
+      required: true,
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          // The HTMLConverter Feature is the feature which manages the HTML serializers.
+          // If you do not pass any arguments to it, it will use the default serializers.
+          HTMLConverterFeature({}),
+        ],
+      }),
+    },
+    {
       name: 'youtubeLink',
       type: 'text',
       required: true,
-      validate: (value: any) => {
+      validate: async (value: any): Promise<string | true> => {
         if (!value) return true
-        if (Array.isArray(value)) return false
-        return /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}$/.test(value)
+        if (Array.isArray(value)) return 'YouTube link must be a single URL'
+        const isValid = /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}$/.test(value)
+        return isValid ? true : 'Invalid YouTube video URL format'
       },
     },
 
@@ -93,6 +97,9 @@ export const Posts: CollectionConfig = {
       },
       index: true,
       label: 'Slug',
+      admin: {
+        hidden: true,
+      },
     },
   ],
 
@@ -100,7 +107,6 @@ export const Posts: CollectionConfig = {
     beforeChange: [
       async ({ req, data }) => {
         if (!data.author && req.user?.id) {
-          console.log('[DEBUG] / beforeChange:', data, req.user?.id)
           // Add user id thành author sau khi save
           return {
             ...data,
@@ -111,11 +117,4 @@ export const Posts: CollectionConfig = {
     ],
   },
   timestamps: true,
-  // versions: {
-  //   drafts: {
-  //     autosave: {
-  //       interval: 375,
-  //     },
-  //   },
-  // },
 }

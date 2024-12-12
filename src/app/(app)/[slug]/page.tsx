@@ -5,6 +5,7 @@ import type { Post as PostType } from '../../../payload-types'
 import config from '../../../payload.config'
 import classes from './index.module.scss'
 import { RefreshRouteOnSave } from './RefreshRouteOnSave'
+import { PageClient } from './page.client'
 
 interface PageParams {
   params: Promise<{
@@ -38,7 +39,7 @@ export default async function Page({ params: paramsPromise }: PageParams) {
     <Fragment>
       <RefreshRouteOnSave />
       <main className={classes.page}>
-        <div dangerouslySetInnerHTML={{ __html: data?.htmlContent || '' }} />
+        <PageClient initialData={data} />
       </main>
     </Fragment>
   )

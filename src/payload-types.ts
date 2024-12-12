@@ -139,6 +139,8 @@ export interface Media {
 export interface Post {
   id: string;
   title: string;
+  author?: (string | null) | User;
+  thumbnail: string | Media;
   rawContent: {
     root: {
       type: string;
@@ -154,8 +156,6 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  author?: (string | null) | User;
-  thumbnail: string | Media;
   youtubeLink: string;
   htmlContent?: string | null;
   slug?: string | null;
@@ -306,9 +306,9 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PostSelect<T extends boolean = true> {
   title?: T;
-  rawContent?: T;
   author?: T;
   thumbnail?: T;
+  rawContent?: T;
   youtubeLink?: T;
   htmlContent?: T;
   slug?: T;
