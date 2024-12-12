@@ -16,10 +16,10 @@ export const PageClient: React.FC<{
   })
   return (
     <div>
-      <h1>{data.title}</h1>
+      <h1>{data?.title}</h1>
       <RichText
         data={
-          data.rawContent || {
+          data?.rawContent || {
             root: {
               children: [],
             },
