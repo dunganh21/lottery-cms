@@ -5,8 +5,12 @@ export const Media: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    group: 'Tài nguyên',
+  },
+
   upload: {
-    staticDir: 'media',
+    staticDir: process.env.ASSETS_DIR,
     imageSizes: [
       {
         name: 'avatar',
@@ -21,6 +25,9 @@ export const Media: CollectionConfig = {
         position: 'centre',
       },
     ],
+    adminThumbnail: ({ doc }: any) => {
+      return `${process.env.PUBLIC_ASSETS_URL}/${doc.filename}?${new Date().getTime()}`
+    },
     mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
   },
   fields: [

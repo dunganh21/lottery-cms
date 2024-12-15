@@ -17,9 +17,13 @@ export const Posts: CollectionConfig = {
         return urlReturn
       },
     },
-    hideAPIURL: true,
+    // hideAPIURL: true,
+    group: 'Bài viết',
   },
-
+  labels: {
+    singular: 'Bài viết',
+    plural: 'Danh sách bài viết',
+  },
   access: {
     // Writers and above can create posts
     create: loggedIn,
@@ -42,12 +46,14 @@ export const Posts: CollectionConfig = {
   fields: [
     {
       name: 'title',
+      label: 'Tiêu đề',
       type: 'text',
       required: true,
     },
 
     {
       name: 'author',
+      label: 'Tác giả',
       type: 'relationship',
       relationTo: 'users',
       hasMany: false,
@@ -59,29 +65,23 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'thumbnail',
+      label: 'Thumbnail',
       type: 'upload',
       relationTo: 'media',
       required: true,
     },
     {
-      name: 'tags',
+      name: 'categories',
+      label: 'Chủ đề',
       type: 'relationship',
-      relationTo: 'tags',
+      relationTo: 'categories',
       hasMany: true,
     },
-
     {
       name: 'rawContent',
+      label: 'Nội dung',
       type: 'richText',
       required: true,
-      editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [
-          ...defaultFeatures,
-          // The HTMLConverter Feature is the feature which manages the HTML serializers.
-          // If you do not pass any arguments to it, it will use the default serializers.
-          HTMLConverterFeature({}),
-        ],
-      }),
     },
     {
       name: 'youtubeLink',

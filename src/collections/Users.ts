@@ -1,10 +1,16 @@
 import { UserRole } from '@/types/User'
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, GlobalConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+  labels: {
+    singular: 'Người dùng',
+    plural: 'Người dùng',
+  },
   admin: {
     useAsTitle: 'username',
+    // @ts-ignore
+    group: 'Tài nguyên',
   },
 
   access: {

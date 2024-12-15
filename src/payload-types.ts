@@ -11,24 +11,24 @@ export interface Config {
     users: UserAuthOperations;
   };
   collections: {
+    post: Post;
+    notification: Notification;
+    faqs: Faq;
+    categories: Category;
     users: User;
     media: Media;
-    post: Post;
-    faqs: Faq;
-    tags: Tag;
-    notification: Notification;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
+    post: PostSelect<false> | PostSelect<true>;
+    notification: NotificationSelect<false> | NotificationSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    post: PostSelect<false> | PostSelect<true>;
-    faqs: FaqsSelect<false> | FaqsSelect<true>;
-    tags: TagsSelect<false> | TagsSelect<true>;
-    notification: NotificationSelect<false> | NotificationSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -76,6 +76,37 @@ export interface UserAuthOperations {
     | {
         username: string;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post".
+ */
+export interface Post {
+  id: string;
+  title: string;
+  author?: (string | null) | User;
+  thumbnail: string | Media;
+  categories?: (string | Category)[] | null;
+  rawContent: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  youtubeLink: string;
+  htmlContent?: string | null;
+  slug?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -138,42 +169,24 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "post".
+ * via the `definition` "categories".
  */
-export interface Post {
+export interface Category {
   id: string;
-  title: string;
-  author?: (string | null) | User;
-  thumbnail: string | Media;
-  tags?: (string | Tag)[] | null;
-  rawContent: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  youtubeLink: string;
-  htmlContent?: string | null;
-  slug?: string | null;
+  label: string;
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
+ * via the `definition` "notification".
  */
-export interface Tag {
+export interface Notification {
   id: string;
-  tag: string;
+  content: string;
+  pushType: 'once' | 'schedule';
+  pushTime?: string | null;
+  pushTimeLocal?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -190,22 +203,27 @@ export interface Faq {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "notification".
- */
-export interface Notification {
-  id: string;
-  content: string;
-  pushTime: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
+    | ({
+        relationTo: 'post';
+        value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'notification';
+        value: string | Notification;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: string | Category;
+      } | null)
     | ({
         relationTo: 'users';
         value: string | User;
@@ -213,22 +231,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
-      } | null)
-    | ({
-        relationTo: 'post';
-        value: string | Post;
-      } | null)
-    | ({
-        relationTo: 'faqs';
-        value: string | Faq;
-      } | null)
-    | ({
-        relationTo: 'tags';
-        value: string | Tag;
-      } | null)
-    | ({
-        relationTo: 'notification';
-        value: string | Notification;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -271,6 +273,53 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "post_select".
+ */
+export interface PostSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  thumbnail?: T;
+  categories?: T;
+  rawContent?: T;
+  youtubeLink?: T;
+  htmlContent?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notification_select".
+ */
+export interface NotificationSelect<T extends boolean = true> {
+  content?: T;
+  pushType?: T;
+  pushTime?: T;
+  pushTimeLocal?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  label?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -333,51 +382,6 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "post_select".
- */
-export interface PostSelect<T extends boolean = true> {
-  title?: T;
-  author?: T;
-  thumbnail?: T;
-  tags?: T;
-  rawContent?: T;
-  youtubeLink?: T;
-  htmlContent?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs_select".
- */
-export interface FaqsSelect<T extends boolean = true> {
-  question?: T;
-  answer?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags_select".
- */
-export interface TagsSelect<T extends boolean = true> {
-  tag?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "notification_select".
- */
-export interface NotificationSelect<T extends boolean = true> {
-  content?: T;
-  pushTime?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

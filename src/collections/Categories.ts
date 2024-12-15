@@ -1,11 +1,17 @@
 import type { CollectionConfig } from 'payload'
 import { loggedIn } from './access/loggedIn'
 
-export const Tags: CollectionConfig = {
-  slug: 'tags',
+export const Categories: CollectionConfig = {
+  slug: 'categories',
   admin: {
-    useAsTitle: 'tag',
-    defaultColumns: ['tag', 'createdAt'],
+    useAsTitle: 'label',
+    defaultColumns: ['label', 'createdAt'],
+    group: 'Bài viết',
+    hideAPIURL: true,
+  },
+  labels: {
+    singular: 'Danh mục',
+    plural: 'Danh mục',
   },
   access: {
     create: loggedIn,
@@ -14,7 +20,7 @@ export const Tags: CollectionConfig = {
   },
   fields: [
     {
-      name: 'tag',
+      name: 'label',
       type: 'text',
       required: true,
     },

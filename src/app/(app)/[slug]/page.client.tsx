@@ -9,7 +9,7 @@ import { RichText } from '@payloadcms/richtext-lexical/react'
 export const PageClient: React.FC<{
   initialData: PostType
 }> = ({ initialData }) => {
-  const { data, isLoading } = useLivePreview<PostType>({
+  const { data } = useLivePreview<PostType>({
     initialData,
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL as string,
     depth: 5,
