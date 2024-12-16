@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { loggedIn, notGuest } from './access/access-right'
 import { Notification as NotificationType } from '../payload-types'
+import { validateUrl } from '@/utils/validate'
 
 export const Notification: CollectionConfig = {
   slug: 'notification',
@@ -33,6 +34,12 @@ export const Notification: CollectionConfig = {
       type: 'textarea',
       required: true,
       label: 'Nội dung',
+    },
+    {
+      name: 'link',
+      type: 'text',
+      label: 'Link',
+      validate: validateUrl,
     },
     {
       name: 'pushType',

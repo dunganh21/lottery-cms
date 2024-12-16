@@ -1,11 +1,11 @@
 'use client'
 
-import { NavGroup } from '@payloadcms/ui'
-import { EntityType, NavGroupType } from '@payloadcms/ui/shared'
+import { NavGroup, useConfig } from '@payloadcms/ui'
+import { EntityType, formatAdminURL, NavGroupType } from '@payloadcms/ui/shared'
 import LinkWithDefault from 'next/link.js'
 import { usePathname } from 'next/navigation.js'
 import { StaticLabel } from 'payload'
-import React, { Fragment, useCallback } from 'react'
+import React, { Fragment } from 'react'
 
 const baseClass = 'nav'
 
@@ -26,7 +26,7 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Danh sách bài viết',
       },
       {
-        slug: 'post',
+        slug: 'post-create',
         type: EntityType.collection,
         label: 'Tạo bài viết',
         href: '/admin/collections/post/new',
@@ -47,7 +47,7 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Thông báo lập lịch',
       },
       {
-        slug: 'notification',
+        slug: 'push-notification',
         type: EntityType.collection,
         label: 'Thông báo đẩy',
         href: '/admin/push-notification',
@@ -59,7 +59,7 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
     entities: [
       {
         slug: 'faqs',
-        type: EntityType.collection,
+        type: EntityType.global,
         label: 'Câu hỏi thường gặp',
       },
       {
@@ -68,8 +68,26 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Thay thế video',
         href: '/admin/video-replace',
       },
+      {
+        slug: 'soi-cau',
+        type: EntityType.global,
+        label: 'Cấu hình video soi cầu',
+        href: '/admin/globals/soi-cau',
+      },
+      {
+        slug: 'about-us',
+        type: EntityType.global,
+        label: 'Về chúng tôi',
+        href: '/admin/globals/about-us',
+      },
+      {
+        slug: 'share-link',
+        type: EntityType.global,
+        label: 'Link chia sẻ',
+        href: '/admin/globals/share-link',
+      },
     ],
-    label: 'Quản lí tổng',
+    label: 'Quản lí chung',
   },
 ]
 
@@ -89,6 +107,12 @@ const INJECT_GROUPS: CustomNavEntity[] = [
 export const DefaultNavClient: React.FC<{}> = () => {
   const pathname = usePathname()
 
+  const {
+    config: {
+      routes: { admin: adminRoute },
+    },
+  } = useConfig()
+
   const getCurrentOpenGroup = () => {
     return DEFAULT_GROUPS.find((group) =>
       group.entities.some((entity) =>
@@ -97,58 +121,49 @@ export const DefaultNavClient: React.FC<{}> = () => {
     )
   }
 
-  const getActivePath = useCallback(
-    (href: string) => {
-      return href === pathname
-    },
-    [pathname],
-  )
+  const getLinkEl = (entity: CustomNavEntity) => {
+    const { slug, type, href: hrefTemp, label } = entity
+    let href: string = ''
+    let id: string = ''
+
+    if (hrefTemp) {
+      href = hrefTemp
+      id = `nav-${slug}`
+    } else if (type === EntityType.collection) {
+      href = formatAdminURL({ adminRoute, path: `/collections/${slug}` })
+      id = `nav-${slug}`
+    } else if (type === EntityType.global) {
+      href = formatAdminURL({ adminRoute, path: `/globals/${slug}` })
+      id = `nav-global-${slug}`
+    }
+
+    const Link = (LinkWithDefault as any).default || LinkWithDefault
+    const LinkElement = Link || 'a'
+
+    return (
+      <LinkElement
+        className={[`${baseClass}__link`, pathname === href && `active`].filter(Boolean).join(' ')}
+        href={href}
+        id={id}
+        key={id}
+        prefetch={Link ? false : undefined}
+      >
+        {pathname === href && <div className={`${baseClass}__link-indicator`} />}
+        <span className={`${baseClass}__link-label`}>{label.toString() || ''}</span>
+      </LinkElement>
+    )
+  }
 
   return (
     <Fragment>
       {DEFAULT_GROUPS.map(({ entities, label }, key) => {
         return (
           <NavGroup isOpen={label === getCurrentOpenGroup()?.label} key={key} label={label}>
-            {entities.map(({ slug, label, href: hrefTemp }, i) => {
-              const href = hrefTemp || `/admin/collections/${slug}`
-              const id = `nav-${slug}`
-
-              const Link = (LinkWithDefault as any).default || LinkWithDefault
-
-              const LinkElement = Link || 'a'
-              const activeCollection =
-                pathname.startsWith(href) && ['/', undefined].includes(pathname[href.length])
-
-              return (
-                <LinkElement
-                  className={[`${baseClass}__link`, activeCollection && `active`]
-                    .filter(Boolean)
-                    .join(' ')}
-                  href={href}
-                  id={id}
-                  key={i}
-                  prefetch={Link ? false : undefined}
-                >
-                  {activeCollection && <div className={`${baseClass}__link-indicator`} />}
-                  <span className={`${baseClass}__link-label`}>{label.toString() || ''}</span>
-                </LinkElement>
-              )
-            })}
+            {entities.map((entity, i) => getLinkEl(entity))}
           </NavGroup>
         )
       })}
-      {INJECT_GROUPS.map(({ slug, label }, key) => {
-        const Link = (LinkWithDefault as any).default || LinkWithDefault
-        const LinkElement = Link || 'a'
-
-        const activeCollection = getActivePath(`/admin/collections/${slug}`)
-        return (
-          <LinkElement href={`/admin/collections/${slug}`} id={`nav-${slug}`} key={key}>
-            {activeCollection && <div className={`${baseClass}__link-indicator`} />}
-            <span className={`${baseClass}__link-label`}>{label?.toString() || ''}</span>
-          </LinkElement>
-        )
-      })}
+      {INJECT_GROUPS.map((entity, key) => getLinkEl(entity))}
     </Fragment>
   )
 }

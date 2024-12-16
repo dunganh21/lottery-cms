@@ -1,7 +1,8 @@
 import { UserRole } from '@/types/User'
+import { validateYoutubeUrl } from '@/utils/validate'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
-import { loggedIn, notGuest } from './access/access-right'
+import { notGuest } from './access/access-right'
 import { formatSlug } from './hooks/formatSlug'
 
 export const Posts: CollectionConfig = {
@@ -87,14 +88,10 @@ export const Posts: CollectionConfig = {
     },
     {
       name: 'youtubeLink',
+      label: 'URL video YouTube',
       type: 'text',
       required: true,
-      validate: async (value: any): Promise<string | true> => {
-        if (!value) return true
-        if (Array.isArray(value)) return 'YouTube link must be a single URL'
-        const isValid = /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=[\w-]{11}$/.test(value)
-        return isValid ? true : 'Invalid YouTube video URL format'
-      },
+      validate: validateYoutubeUrl,
     },
 
     lexicalHTML('rawContent', { name: 'htmlContent', hidden: true, storeInDB: true }),

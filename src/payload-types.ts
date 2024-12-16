@@ -13,7 +13,6 @@ export interface Config {
   collections: {
     post: Post;
     notification: Notification;
-    faqs: Faq;
     categories: Category;
     users: User;
     media: Media;
@@ -25,7 +24,6 @@ export interface Config {
   collectionsSelect: {
     post: PostSelect<false> | PostSelect<true>;
     notification: NotificationSelect<false> | NotificationSelect<true>;
-    faqs: FaqsSelect<false> | FaqsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -36,8 +34,18 @@ export interface Config {
   db: {
     defaultIDType: string;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    faqs: Faq;
+    'soi-cau': SoiCau;
+    'about-us': AboutUs;
+    'share-link': ShareLink;
+  };
+  globalsSelect: {
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
+    'soi-cau': SoiCauSelect<false> | SoiCauSelect<true>;
+    'about-us': AboutUsSelect<false> | AboutUsSelect<true>;
+    'share-link': ShareLinkSelect<false> | ShareLinkSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -185,20 +193,10 @@ export interface Notification {
   id: string;
   title: string;
   content: string;
+  link?: string | null;
   pushType: 'once' | 'schedule';
   pushTimeDate?: string | null;
   pushTimeHour?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs".
- */
-export interface Faq {
-  id: string;
-  question: string;
-  answer: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -216,10 +214,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notification';
         value: string | Notification;
-      } | null)
-    | ({
-        relationTo: 'faqs';
-        value: string | Faq;
       } | null)
     | ({
         relationTo: 'categories';
@@ -298,19 +292,10 @@ export interface PostSelect<T extends boolean = true> {
 export interface NotificationSelect<T extends boolean = true> {
   title?: T;
   content?: T;
+  link?: T;
   pushType?: T;
   pushTimeDate?: T;
   pushTimeHour?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faqs_select".
- */
-export interface FaqsSelect<T extends boolean = true> {
-  question?: T;
-  answer?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -416,6 +401,116 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: string;
+  faqItems?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "soi-cau".
+ */
+export interface SoiCau {
+  id: string;
+  youtubeVideo: string;
+  facebookVideo: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-us".
+ */
+export interface AboutUs {
+  id: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  htmlContent?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "share-link".
+ */
+export interface ShareLink {
+  id: string;
+  link: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "soi-cau_select".
+ */
+export interface SoiCauSelect<T extends boolean = true> {
+  youtubeVideo?: T;
+  facebookVideo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-us_select".
+ */
+export interface AboutUsSelect<T extends boolean = true> {
+  content?: T;
+  htmlContent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "share-link_select".
+ */
+export interface ShareLinkSelect<T extends boolean = true> {
+  link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

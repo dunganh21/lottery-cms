@@ -11,7 +11,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Faqs } from './collections/Faq'
+import { Faqs } from './globals/Faq'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Post'
 
@@ -22,6 +22,9 @@ import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
 import { vi } from '@payloadcms/translations/languages/vi'
 import { en } from '@payloadcms/translations/languages/en'
+import SoiCau from './globals/SoiCau'
+import AboutUs from './globals/AboutUs'
+import ShareLink from './globals/ShareLink'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -35,6 +38,10 @@ export default buildConfig({
     },
     components: {
       Nav: '/components/Nav/index',
+      graphics: {
+        Icon: '/components/Logo/Icon',
+        Logo: '/components/Logo/Icon',
+      },
       views: {
         pushNotification: {
           Component: '/views/Push-notification/index',
@@ -48,8 +55,8 @@ export default buildConfig({
     },
   },
 
-  collections: [Posts, Notification, Faqs, Categories, Users, Media],
-  // globals: [Users, Media],
+  collections: [Posts, Notification, Categories, Users, Media],
+  globals: [Faqs, SoiCau, AboutUs, ShareLink],
 
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

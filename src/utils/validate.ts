@@ -1,0 +1,53 @@
+export const validateYoutubeUrl = (value: any) => {
+  if (!value) return true
+  if (Array.isArray(value)) return 'YouTube link must be a single URL'
+
+  try {
+    const url = new URL(value)
+    if (!url.hostname.includes('youtube.com')) {
+      return 'Invalid YouTube video URL format'
+    }
+
+    const videoId = url.searchParams.get('v')
+    if (!videoId || videoId.length !== 11) {
+      return 'Invalid YouTube video ID'
+    }
+
+    return true
+  } catch (error) {
+    return 'Invalid URL format'
+  }
+}
+
+export const validateFacebookUrl = (value: any) => {
+  if (!value) return true
+  if (Array.isArray(value)) return 'Facebook link must be a single URL'
+
+  try {
+    const url = new URL(value)
+    if (!url.hostname.includes('facebook.com')) {
+      return 'Invalid Facebook video URL format'
+    }
+
+    const videoId = url.searchParams.get('v')
+    if (!videoId) {
+      return 'Invalid Facebook video ID'
+    }
+
+    return true
+  } catch (error) {
+    return 'Invalid URL format'
+  }
+}
+
+export const validateUrl = (value: any) => {
+  if (!value) return true
+  if (Array.isArray(value)) return 'Link must be a single URL'
+
+  try {
+    new URL(value)
+    return true
+  } catch (error) {
+    return 'Invalid URL format'
+  }
+}

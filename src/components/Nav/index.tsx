@@ -20,8 +20,6 @@ const DefaultNav: React.FC<NavProps> = async (props) => {
     admin: {
       components: { afterNavLinks, beforeNavLinks, logout },
     },
-    collections,
-    globals,
   } = payload.config
 
   const LogoutComponent = RenderServerComponent({
