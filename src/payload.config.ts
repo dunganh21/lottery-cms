@@ -32,6 +32,14 @@ export default buildConfig({
     // components: {
     //   Nav: '/components/Nav/index',
     // },
+    components: {
+      views: {
+        myCustomView: {
+          Component: '/views/Push-noti',
+          path: '/push-notification',
+        },
+      },
+    },
   },
 
   collections: [Posts, Notification, Faqs, Categories, Users, Media],

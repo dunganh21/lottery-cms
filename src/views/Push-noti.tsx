@@ -1,13 +1,10 @@
+// Server Component
 import type { AdminViewProps } from 'payload'
 import { DefaultTemplate } from '@payloadcms/next/templates'
 import { Gutter } from '@payloadcms/ui'
-import React from 'react'
+import { NotificationForm } from './Notification-form.client'
 
-export const PushNotification: React.FC<AdminViewProps> = ({
-  initPageResult,
-  params,
-  searchParams,
-}) => {
+const PushNotification: React.FC<AdminViewProps> = ({ initPageResult, params, searchParams }) => {
   return (
     <DefaultTemplate
       i18n={initPageResult.req.i18n}
@@ -20,10 +17,11 @@ export const PushNotification: React.FC<AdminViewProps> = ({
       visibleEntities={initPageResult.visibleEntities}
     >
       <Gutter>
-        <h1>Custom Default Root View</h1>
-        <br />
-        <p>This view uses the Default Template.</p>
+        <h1>Thông báo đấy</h1>
+        <NotificationForm />
       </Gutter>
     </DefaultTemplate>
   )
 }
+
+export default PushNotification
