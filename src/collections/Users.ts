@@ -1,6 +1,6 @@
 import { UserRole } from '@/types/User'
 import type { CollectionConfig } from 'payload'
-import { isRoot } from './access/access-right'
+import { isRoot, notGuest } from './access/access-right'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -15,7 +15,7 @@ export const Users: CollectionConfig = {
   },
 
   access: {
-    read: isRoot,
+    read: notGuest,
     create: isRoot,
     update: isRoot,
     delete: isRoot,
