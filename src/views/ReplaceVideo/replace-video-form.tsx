@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { Button, TextField, Form, FormProps, toast } from '@payloadcms/ui'
 import { FormState } from 'payload'
-import qs from 'qs'
 
 const initialFormState: FormState = {
   beforeLink: {
