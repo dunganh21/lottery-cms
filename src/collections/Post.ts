@@ -1,8 +1,8 @@
 import { UserRole } from '@/types/User'
-import { HTMLConverterFeature, lexicalEditor, lexicalHTML } from '@payloadcms/richtext-lexical'
+import { lexicalHTML } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
-import { formatSlug } from './hooks/formatSlug'
 import { loggedIn } from './access/loggedIn'
+import { formatSlug } from './hooks/formatSlug'
 
 export const Posts: CollectionConfig = {
   slug: 'post',
@@ -20,6 +20,7 @@ export const Posts: CollectionConfig = {
     // hideAPIURL: true,
     group: 'Bài viết',
   },
+  // endpoints: [ReplaceVideoEndpoint],
   labels: {
     singular: 'Bài viết',
     plural: 'Danh sách bài viết',

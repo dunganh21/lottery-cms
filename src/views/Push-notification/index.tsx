@@ -16,8 +16,10 @@ const PushNotification: React.FC<AdminViewProps> = ({ initPageResult, params, se
       user={initPageResult.req.user || undefined}
       visibleEntities={initPageResult.visibleEntities}
     >
-      <Gutter>
-        <h1>Thông báo đấy</h1>
+      <Gutter className="doc-header">
+        <h1 className="doc-header__title render-title">Thông báo đẩy</h1>
+      </Gutter>
+      <Gutter className="document-fields__edit">
         <NotificationForm />
       </Gutter>
     </DefaultTemplate>

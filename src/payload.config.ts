@@ -18,6 +18,7 @@ import { Posts } from './collections/Post'
 import { Users } from './collections/Users'
 import { Notification } from './collections/Noti'
 import { Categories } from './collections/Categories'
+import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -34,9 +35,13 @@ export default buildConfig({
     // },
     components: {
       views: {
-        myCustomView: {
-          Component: '/views/Push-noti',
+        pushNotification: {
+          Component: '/views/Push-notification/index',
           path: '/push-notification',
+        },
+        replaceVideo: {
+          Component: '/views/ReplaceVideo/index',
+          path: '/video-replace',
         },
       },
     },
@@ -65,4 +70,5 @@ export default buildConfig({
     payloadCloudPlugin(),
     // storage-adapter-placeholder
   ],
+  endpoints: [ReplaceVideoEndpoint],
 })
