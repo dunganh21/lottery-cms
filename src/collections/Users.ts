@@ -1,5 +1,6 @@
 import { UserRole } from '@/types/User'
-import type { CollectionConfig, GlobalConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
+import { isRoot } from './access/access-right'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -14,12 +15,10 @@ export const Users: CollectionConfig = {
   },
 
   access: {
-    // Only root admins can create users
-    create: ({ req: { user } }) => user?.role === UserRole.Root,
-    // Only root admins can update users
-    update: ({ req: { user } }) => user?.role === UserRole.Root,
-    // Only root admins can delete users
-    delete: ({ req: { user } }) => user?.role === UserRole.Root,
+    read: isRoot,
+    create: isRoot,
+    update: isRoot,
+    delete: isRoot,
   },
 
   auth: {
@@ -39,6 +38,7 @@ export const Users: CollectionConfig = {
       type: 'select',
       defaultValue: UserRole.Writer,
       options: [
+        { label: 'Guest', value: UserRole.Guest },
         { label: 'Writer', value: UserRole.Writer },
         { label: 'Moderator', value: UserRole.Moderator },
         { label: 'Root Admin', value: UserRole.Root },

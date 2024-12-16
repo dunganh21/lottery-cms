@@ -20,6 +20,9 @@ import { Notification } from './collections/Noti'
 import { Categories } from './collections/Categories'
 import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
+import { vi } from '@payloadcms/translations/languages/vi'
+import { en } from '@payloadcms/translations/languages/en'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -30,10 +33,8 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    // components: {
-    //   Nav: '/components/Nav/index',
-    // },
     components: {
+      Nav: '/components/Nav/index',
       views: {
         pushNotification: {
           Component: '/views/Push-notification/index',
@@ -66,9 +67,9 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   sharp,
-  plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
-  ],
+  plugins: [payloadCloudPlugin()],
   endpoints: [ReplaceVideoEndpoint],
+  i18n: {
+    supportedLanguages: { vi, en },
+  },
 })

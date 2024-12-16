@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { loggedIn } from './access/loggedIn'
+import { notGuest } from './access/access-right'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -14,9 +14,9 @@ export const Categories: CollectionConfig = {
     plural: 'Danh mục',
   },
   access: {
-    create: loggedIn,
-    update: loggedIn,
-    delete: loggedIn,
+    create: notGuest,
+    update: notGuest,
+    delete: notGuest,
   },
   fields: [
     {

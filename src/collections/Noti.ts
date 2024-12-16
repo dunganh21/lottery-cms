@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
-import { loggedIn } from './access/loggedIn'
+import { loggedIn, notGuest } from './access/access-right'
+import { Notification as NotificationType } from '../payload-types'
 
 export const Notification: CollectionConfig = {
   slug: 'notification',
@@ -10,18 +11,26 @@ export const Notification: CollectionConfig = {
 
   admin: {
     useAsTitle: 'content',
-    defaultColumns: ['content', 'pushTime', 'createdAt'],
+    defaultColumns: ['title', 'content', 'pushType', 'pushTimeDate', 'pushTimeHour'],
+    hideAPIURL: true,
     group: 'Thông báo',
   },
   access: {
-    create: loggedIn,
-    update: loggedIn,
-    delete: loggedIn,
+    read: notGuest,
+    create: notGuest,
+    update: notGuest,
+    delete: notGuest,
   },
   fields: [
     {
-      name: 'content',
+      name: 'title',
       type: 'text',
+      required: true,
+      label: 'Tiêu đề',
+    },
+    {
+      name: 'content',
+      type: 'textarea',
       required: true,
       label: 'Nội dung',
     },
@@ -43,7 +52,7 @@ export const Notification: CollectionConfig = {
       defaultValue: 'once',
     },
     {
-      name: 'pushTime',
+      name: 'pushTimeDate',
       label: 'Ngày thông báo',
       type: 'date',
       required: true,
@@ -56,8 +65,8 @@ export const Notification: CollectionConfig = {
       },
     },
     {
-      name: 'pushTimeLocal',
-      label: 'Thời gian thông báo',
+      name: 'pushTimeHour',
+      label: 'Giờ thông báo',
       type: 'date',
       required: true,
       admin: {
@@ -69,5 +78,23 @@ export const Notification: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    // afterRead: [
+    //   async ({ doc }: { doc: NotificationType }) => {
+    //     let pushTime = ''
+    //     if (doc.pushType === 'once') {
+    //       pushTime = doc.pushTimeDate || ''
+    //     } else {
+    //       pushTime = doc.pushTimeHour || ''
+    //     }
+    //     const { pushType, id } = doc
+    //     return {
+    //       pushType,
+    //       pushTime,
+    //       id,
+    //     }
+    //   },
+    // ],
+  },
   timestamps: true,
 }

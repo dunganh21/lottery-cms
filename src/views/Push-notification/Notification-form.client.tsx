@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Button, TextField, Form, FormProps, toast } from '@payloadcms/ui'
+import { Button, TextField, Form, FormProps, toast, TextareaField } from '@payloadcms/ui'
 import { FormState } from 'payload'
 
 const initialFormState: FormState = {
@@ -17,15 +17,15 @@ const initialFormState: FormState = {
 export const NotificationForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit: FormProps['onSubmit'] = async (fields, data) => {
+  const handleSubmit: FormProps['onSubmit'] = async (_, data) => {
     try {
       setIsLoading(true)
-      const response = await fetch(process.env.NEXT_PUBLIC_PUSH_NOTIFICATION_API_URL as string, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/notification/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: data.message }),
+        body: JSON.stringify({ title: data.title, body: data.message }),
       })
 
       if (!response.ok) {
@@ -41,18 +41,29 @@ export const NotificationForm: React.FC = () => {
 
   return (
     <Form onSubmit={handleSubmit} initialState={initialFormState}>
-      <TextField
-        path="message"
-        field={{
-          name: 'message',
-          label: 'Nội dung thông báo',
-          type: 'text',
-          required: true,
-        }}
-      />
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? 'Đang gửi...' : 'Gửi thông báo'}
-      </Button>
+      <div className="render-fields document-fields__fields">
+        <TextField
+          path="title"
+          field={{
+            name: 'title',
+            label: 'Tiêu đề',
+            type: 'text',
+            required: true,
+          }}
+        />
+        <TextareaField
+          path="message"
+          field={{
+            name: 'message',
+            label: 'Nội dung thông báo',
+            type: 'textarea',
+            required: true,
+          }}
+        />
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? 'Đang gửi...' : 'Gửi thông báo'}
+        </Button>
+      </div>
     </Form>
   )
 }

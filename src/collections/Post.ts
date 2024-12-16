@@ -1,7 +1,7 @@
 import { UserRole } from '@/types/User'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
-import { loggedIn } from './access/loggedIn'
+import { loggedIn, notGuest } from './access/access-right'
 import { formatSlug } from './hooks/formatSlug'
 
 export const Posts: CollectionConfig = {
@@ -27,7 +27,7 @@ export const Posts: CollectionConfig = {
   },
   access: {
     // Writers and above can create posts
-    create: loggedIn,
+    create: notGuest,
     // Writers can update their own posts, moderators and root can update any
     update: ({ req: { user }, data }) => {
       if (!user || !data) return false

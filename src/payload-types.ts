@@ -115,7 +115,7 @@ export interface Post {
 export interface User {
   id: string;
   phoneNumber?: string | null;
-  role?: ('writer' | 'moderator' | 'root') | null;
+  role?: ('guest' | 'writer' | 'moderator' | 'root') | null;
   avatar?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
@@ -183,10 +183,11 @@ export interface Category {
  */
 export interface Notification {
   id: string;
+  title: string;
   content: string;
   pushType: 'once' | 'schedule';
-  pushTime?: string | null;
-  pushTimeLocal?: string | null;
+  pushTimeDate?: string | null;
+  pushTimeHour?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -295,10 +296,11 @@ export interface PostSelect<T extends boolean = true> {
  * via the `definition` "notification_select".
  */
 export interface NotificationSelect<T extends boolean = true> {
+  title?: T;
   content?: T;
   pushType?: T;
-  pushTime?: T;
-  pushTimeLocal?: T;
+  pushTimeDate?: T;
+  pushTimeHour?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongoose'
 
 export enum UserRole {
+  Guest = 'guest',
   Writer = 'writer',
   Moderator = 'moderator',
   Root = 'root',

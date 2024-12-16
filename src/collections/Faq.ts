@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { loggedIn } from './access/loggedIn'
+import { loggedIn, notGuest } from './access/access-right'
 
 export const Faqs: CollectionConfig = {
   slug: 'faqs',
@@ -14,20 +14,22 @@ export const Faqs: CollectionConfig = {
     group: 'Quản lí tổng',
   },
   access: {
-    create: loggedIn,
-    update: loggedIn,
-    delete: loggedIn,
+    create: notGuest,
+    update: notGuest,
+    delete: notGuest,
   },
   fields: [
     {
       name: 'question',
       type: 'text',
       required: true,
+      label: 'Câu hỏi',
     },
     {
       name: 'answer',
       type: 'textarea',
       required: true,
+      label: 'Câu trả lời',
     },
   ],
   timestamps: true,
