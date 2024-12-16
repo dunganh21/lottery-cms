@@ -27,6 +27,7 @@ export const Posts: CollectionConfig = {
   },
   access: {
     // Writers and above can create posts
+    read: () => true,
     create: notGuest,
     // Writers can update their own posts, moderators and root can update any
     update: ({ req: { user }, data }) => {

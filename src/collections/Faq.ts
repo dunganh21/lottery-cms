@@ -14,6 +14,7 @@ export const Faqs: CollectionConfig = {
     group: 'Quản lí tổng',
   },
   access: {
+    read: () => true,
     create: notGuest,
     update: notGuest,
     delete: notGuest,

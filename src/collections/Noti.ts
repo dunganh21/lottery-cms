@@ -16,7 +16,7 @@ export const Notification: CollectionConfig = {
     group: 'Thông báo',
   },
   access: {
-    read: notGuest,
+    read: () => true,
     create: notGuest,
     update: notGuest,
     delete: notGuest,

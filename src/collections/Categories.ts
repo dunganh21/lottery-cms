@@ -14,6 +14,7 @@ export const Categories: CollectionConfig = {
     plural: 'Danh mục',
   },
   access: {
+    read: () => true,
     create: notGuest,
     update: notGuest,
     delete: notGuest,
