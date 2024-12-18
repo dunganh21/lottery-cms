@@ -1,10 +1,11 @@
 import type { CollectionConfig } from 'payload'
-import { loggedIn, notGuest } from './access/access-right'
+import { notGuest } from './access/access-right'
 
 export const Media: CollectionConfig = {
   slug: 'media',
   access: {
-    create: notGuest,
+    read: () => true,
+    create: () => true,
     update: notGuest,
     delete: notGuest,
   },

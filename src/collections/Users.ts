@@ -15,7 +15,7 @@ export const Users: CollectionConfig = {
   },
 
   access: {
-    read: notGuest,
+    read: () => true,
     create: isRoot,
     update: isRoot,
     delete: isRoot,
@@ -38,10 +38,10 @@ export const Users: CollectionConfig = {
       type: 'select',
       defaultValue: UserRole.Writer,
       options: [
-        { label: 'Guest', value: UserRole.Guest },
-        { label: 'Writer', value: UserRole.Writer },
-        { label: 'Moderator', value: UserRole.Moderator },
-        { label: 'Root Admin', value: UserRole.Root },
+        { label: 'Người dùng', value: UserRole.User },
+        { label: 'Người viết bài', value: UserRole.Writer },
+        { label: 'Kiểm duyệt bài viết', value: UserRole.Moderator },
+        { label: 'Quản trị viên', value: UserRole.Root },
       ],
       access: {
         update: ({ req: { user } }) => user?.role === UserRole.Root,
@@ -53,4 +53,21 @@ export const Users: CollectionConfig = {
       relationTo: 'media',
     },
   ],
+  hooks: {
+    afterRead: [
+      async ({ req: { user }, doc }) => {
+        // Not logged in - only allow reading writer and above roles
+        if (!user && [UserRole.Guest, UserRole.User].includes(doc.role)) {
+          return null
+        }
+
+        // Logged in - allow reading writer and above roles, plus own user info
+        if (user && [UserRole.Guest, UserRole.User].includes(doc.role) && doc.id !== user.id) {
+          return null
+        }
+
+        return doc
+      },
+    ],
+  },
 }

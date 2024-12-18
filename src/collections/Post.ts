@@ -21,7 +21,6 @@ export const Posts: CollectionConfig = {
     // hideAPIURL: true,
     group: 'Bài viết',
   },
-  // endpoints: [ReplaceVideoEndpoint],
   labels: {
     singular: 'Bài viết',
     plural: 'Danh sách bài viết',
@@ -41,11 +40,6 @@ export const Posts: CollectionConfig = {
     delete: ({ req: { user } }) =>
       user?.role ? [UserRole.Moderator, UserRole.Root].includes(user.role as UserRole) : false,
   },
-  defaultPopulate: {
-    author: {
-      username: true,
-    },
-  },
   fields: [
     {
       name: 'title',
@@ -61,7 +55,7 @@ export const Posts: CollectionConfig = {
       relationTo: 'users',
       hasMany: false,
       access: {
-        read: ({ req: { user } }) => user?.role === UserRole.Root,
+        read: () => true,
         create: ({ req: { user } }) => user?.role === UserRole.Root,
         update: ({ req: { user } }) => user?.role === UserRole.Root,
       },
@@ -74,7 +68,7 @@ export const Posts: CollectionConfig = {
       required: true,
     },
     {
-      name: 'categories',
+      name: 'tags',
       label: 'Chủ đề',
       type: 'relationship',
       relationTo: 'categories',
@@ -117,6 +111,30 @@ export const Posts: CollectionConfig = {
           return {
             ...data,
             author: req.user?.id,
+          }
+        }
+      },
+    ],
+    afterRead: [
+      async ({ doc, findMany }) => {
+        if (findMany) {
+          return {
+            title: doc.title,
+            id: doc.id,
+            authorName: doc.author?.username,
+            authorAvatar: doc.author?.avatar?.thumbnailURL,
+            thumbnail: doc.thumbnail?.thumbnailURL,
+          }
+        } else {
+          return {
+            title: doc.title,
+            id: doc.id,
+            authorName: doc.author?.username,
+            authorAvatar: doc.author?.avatar?.thumbnailURL,
+            thumbnail: doc.thumbnail?.thumbnailURL,
+            content: doc.htmlContent,
+            youtubeLink: doc.youtubeLink,
+            tags: (doc.tags || []).map((tag: any) => tag.label),
           }
         }
       },

@@ -6,7 +6,7 @@ export const loggedIn: Access = ({ req: { user } }) => {
 }
 
 export const notGuest: Access = ({ req: { user } }) => {
-  return Boolean(user) && user?.role !== UserRole.Guest
+  return Boolean(user) && (user?.role as UserRole) !== UserRole.Guest
 }
 
 export const isRoot: Access = ({ req: { user } }) => {

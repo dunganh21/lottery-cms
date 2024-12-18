@@ -11,20 +11,20 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 
-import { Faqs } from './globals/Faq'
 import { Media } from './collections/Media'
 import { Posts } from './collections/Post'
+import { Faqs } from './globals/Faq'
 
-import { Users } from './collections/Users'
-import { Notification } from './collections/Noti'
 import { Categories } from './collections/Categories'
+import { Notification } from './collections/Noti'
+import { Users } from './collections/Users'
 import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
-import { vi } from '@payloadcms/translations/languages/vi'
 import { en } from '@payloadcms/translations/languages/en'
-import SoiCau from './globals/SoiCau'
+import { vi } from '@payloadcms/translations/languages/vi'
 import AboutUs from './globals/AboutUs'
 import ShareLink from './globals/ShareLink'
+import SoiCau from './globals/SoiCau'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

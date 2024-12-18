@@ -29,7 +29,7 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         slug: 'post-create',
         type: EntityType.collection,
         label: 'Tạo bài viết',
-        href: '/admin/collections/post/new',
+        href: '/admin/collections/post/create',
       },
       {
         slug: 'categories',

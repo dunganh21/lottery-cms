@@ -94,7 +94,7 @@ export interface Post {
   title: string;
   author?: (string | null) | User;
   thumbnail: string | Media;
-  categories?: (string | Category)[] | null;
+  tags?: (string | Category)[] | null;
   rawContent: {
     root: {
       type: string;
@@ -123,7 +123,7 @@ export interface Post {
 export interface User {
   id: string;
   phoneNumber?: string | null;
-  role?: ('guest' | 'writer' | 'moderator' | 'root') | null;
+  role?: ('user' | 'writer' | 'moderator' | 'root') | null;
   avatar?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
@@ -277,7 +277,7 @@ export interface PostSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   thumbnail?: T;
-  categories?: T;
+  tags?: T;
   rawContent?: T;
   youtubeLink?: T;
   htmlContent?: T;
