@@ -1,4 +1,3 @@
-// storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import {
@@ -20,8 +19,7 @@ import { Notification } from './collections/Noti'
 import { Users } from './collections/Users'
 import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
-import { en } from '@payloadcms/translations/languages/en'
-import { vi } from '@payloadcms/translations/languages/vi'
+import PostSub from './collections/Post-sub'
 import AboutUs from './globals/AboutUs'
 import ShareLink from './globals/ShareLink'
 import SoiCau from './globals/SoiCau'
@@ -55,7 +53,7 @@ export default buildConfig({
     },
   },
 
-  collections: [Posts, Notification, Categories, Users, Media],
+  collections: [Posts, Notification, Categories, Users, Media, PostSub],
   globals: [Faqs, SoiCau, AboutUs, ShareLink],
 
   editor: lexicalEditor({
@@ -76,7 +74,4 @@ export default buildConfig({
   sharp,
   plugins: [payloadCloudPlugin()],
   endpoints: [ReplaceVideoEndpoint],
-  i18n: {
-    supportedLanguages: { vi, en },
-  },
 })

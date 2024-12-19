@@ -1,3 +1,4 @@
+import { Post } from '@/payload-types'
 import { UserRole } from '@/types/User'
 import { validateYoutubeUrl } from '@/utils/validate'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
@@ -141,4 +142,46 @@ export const Posts: CollectionConfig = {
     ],
   },
   timestamps: true,
+
+  endpoints: [
+    {
+      path: '/subscribes',
+      method: 'get',
+      handler: async ({ user, payload }) => {
+        if (!user?.id) {
+          return Response.json('Unauthorized', {
+            status: 401,
+          })
+        }
+
+        const postSubscribes = await payload.find({
+          collection: 'post-subscribes',
+          where: {
+            userId: { equals: user?.id },
+          },
+          select: {
+            postIds: true,
+          },
+        })
+
+        if (!postSubscribes.docs.length && !postSubscribes.docs[0].postIds?.length) {
+          return Response.json([])
+        }
+
+        const postFormat = postSubscribes.docs[0].postIds as Post[]
+        return Response.json({
+          docs: postFormat,
+          totalDocs: postFormat.length,
+          limit: postFormat.length,
+          totalPages: 1,
+          page: 1,
+          pagingCounter: 1,
+          hasPrevPage: false,
+          hasNextPage: false,
+          prevPage: null,
+          nextPage: null,
+        })
+      },
+    },
+  ],
 }
