@@ -23,6 +23,7 @@ import PostSub from './collections/Post-sub'
 import AboutUs from './globals/AboutUs'
 import ShareLink from './globals/ShareLink'
 import SoiCau from './globals/SoiCau'
+import { BannerGlobal } from './globals/Banner'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -54,7 +55,7 @@ export default buildConfig({
   },
 
   collections: [Posts, Notification, Categories, Users, Media, PostSub],
-  globals: [Faqs, SoiCau, AboutUs, ShareLink],
+  globals: [Faqs, SoiCau, AboutUs, ShareLink, BannerGlobal],
 
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

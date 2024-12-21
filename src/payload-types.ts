@@ -41,12 +41,14 @@ export interface Config {
     'soi-cau': SoiCau;
     'about-us': AboutUs;
     'share-link': ShareLink;
+    banner: Banner;
   };
   globalsSelect: {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
     'soi-cau': SoiCauSelect<false> | SoiCauSelect<true>;
     'about-us': AboutUsSelect<false> | AboutUsSelect<true>;
     'share-link': ShareLinkSelect<false> | ShareLinkSelect<true>;
+    banner: BannerSelect<false> | BannerSelect<true>;
   };
   locale: null;
   user: User & {
@@ -493,6 +495,21 @@ export interface ShareLink {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banner".
+ */
+export interface Banner {
+  id: string;
+  bannerItems?:
+    | {
+        banner: string | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
@@ -535,6 +552,21 @@ export interface AboutUsSelect<T extends boolean = true> {
  */
 export interface ShareLinkSelect<T extends boolean = true> {
   link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banner_select".
+ */
+export interface BannerSelect<T extends boolean = true> {
+  bannerItems?:
+    | T
+    | {
+        banner?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
