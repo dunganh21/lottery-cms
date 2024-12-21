@@ -51,3 +51,15 @@ export const validateUrl = (value: any) => {
     return 'Invalid URL format'
   }
 }
+
+export const validateEmail = (value: any) => {
+  if (!value) return true
+  if (Array.isArray(value)) return 'Email must be a single email'
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+  if (!emailRegex.test(value)) {
+    return 'Email không đúng định dạng'
+  }
+
+  return true
+}

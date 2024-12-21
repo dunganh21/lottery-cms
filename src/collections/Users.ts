@@ -1,6 +1,7 @@
 import { UserRole } from '@/types/User'
 import type { CollectionConfig } from 'payload'
-import { isRoot, notGuest } from './access/access-right'
+import { isRoot } from './access/access-right'
+import { validateEmail } from '@/utils/validate'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -16,28 +17,36 @@ export const Users: CollectionConfig = {
 
   access: {
     read: () => true,
-    create: isRoot,
-    update: isRoot,
+    create: () => true,
+    update: ({ req: { user }, id }) => {
+      if (!user) return false
+      if (user.role === UserRole.Root) return true
+      return user.id === id
+    },
     delete: isRoot,
   },
 
   auth: {
     loginWithUsername: {
-      allowEmailLogin: true,
+      allowEmailLogin: false,
       requireEmail: false,
       requireUsername: true,
     },
   },
   fields: [
     {
-      name: 'phoneNumber',
-      type: 'text',
+      name: 'email',
+      type: 'email',
+      label: 'Email',
+      required: true,
+      validate: validateEmail,
     },
     {
       name: 'role',
       type: 'select',
       defaultValue: UserRole.Writer,
       options: [
+        { label: 'Khách', value: UserRole.Guest },
         { label: 'Người dùng', value: UserRole.User },
         { label: 'Người viết bài', value: UserRole.Writer },
         { label: 'Kiểm duyệt bài viết', value: UserRole.Moderator },
@@ -51,6 +60,21 @@ export const Users: CollectionConfig = {
       name: 'avatar',
       type: 'upload',
       relationTo: 'media',
+      label: 'Ảnh đại diện',
+    },
+    {
+      name: 'gender',
+      type: 'select',
+      options: [
+        { label: 'Nam', value: 'male' },
+        { label: 'Nữ', value: 'female' },
+      ],
+      label: 'Giới tính',
+    },
+    {
+      name: 'city',
+      type: 'text',
+      label: 'Tỉnh/Thành phố',
     },
   ],
   hooks: {
