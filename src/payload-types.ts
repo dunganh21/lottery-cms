@@ -60,20 +60,34 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
-  forgotPassword: {
-    username: string;
-  };
-  login: {
-    password: string;
-    username: string;
-  };
+  forgotPassword:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
+  login:
+    | {
+        email: string;
+        password: string;
+      }
+    | {
+        password: string;
+        username: string;
+      };
   registerFirstUser: {
     password: string;
     username: string;
+    email?: string;
   };
-  unlock: {
-    username: string;
-  };
+  unlock:
+    | {
+        email: string;
+      }
+    | {
+        username: string;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -113,8 +127,8 @@ export interface Post {
 export interface User {
   id: string;
   role?: ('guest' | 'user' | 'writer' | 'moderator' | 'root') | null;
-  avatar?: (string | null) | Media;
   gender?: ('male' | 'female') | null;
+  age?: number | null;
   city?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -320,8 +334,8 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
-  avatar?: T;
   gender?: T;
+  age?: T;
   city?: T;
   updatedAt?: T;
   createdAt?: T;

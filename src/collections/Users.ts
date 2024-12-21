@@ -28,7 +28,7 @@ export const Users: CollectionConfig = {
 
   auth: {
     loginWithUsername: {
-      allowEmailLogin: false,
+      allowEmailLogin: true,
       requireEmail: false,
       requireUsername: true,
     },
@@ -53,14 +53,16 @@ export const Users: CollectionConfig = {
         { label: 'Quản trị viên', value: UserRole.Root },
       ],
       access: {
-        update: ({ req: { user } }) => user?.role === UserRole.Root,
+        // update: () => true,
+        update: ({ req: { user }, id, data }) => {
+          if (!user) return false
+          if (user?.role === UserRole.Root) return true
+
+          // Only allow update own user info
+          if (user.id !== id) return false
+          return (data as any)?.role === UserRole.User
+        },
       },
-    },
-    {
-      name: 'avatar',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Ảnh đại diện',
     },
     {
       name: 'gender',
@@ -70,6 +72,11 @@ export const Users: CollectionConfig = {
         { label: 'Nữ', value: 'female' },
       ],
       label: 'Giới tính',
+    },
+    {
+      name: 'age',
+      type: 'number',
+      label: 'Tuổi',
     },
     {
       name: 'city',
