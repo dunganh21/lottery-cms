@@ -117,7 +117,7 @@ export const Posts: CollectionConfig = {
       },
     ],
     afterRead: [
-      async ({ doc, findMany }) => {
+      async ({ doc, findMany, req }) => {
         if (findMany) {
           return {
             title: doc.title,
@@ -127,6 +127,15 @@ export const Posts: CollectionConfig = {
             thumbnail: doc.thumbnail?.thumbnailURL,
           }
         } else {
+          const { user, payload } = req
+          const postSubscribesCount = await payload.count({
+            collection: 'post-subscribes',
+            where: {
+              userId: { equals: user?.id },
+              postIds: { contains: doc.id },
+            },
+          })
+
           return {
             title: doc.title,
             id: doc.id,
@@ -136,6 +145,7 @@ export const Posts: CollectionConfig = {
             content: doc.htmlContent,
             youtubeLink: doc.youtubeLink,
             tags: (doc.tags || []).map((tag: any) => tag.label),
+            isFollowed: postSubscribesCount.totalDocs > 0,
           }
         }
       },
