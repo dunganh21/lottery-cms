@@ -86,6 +86,12 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Link chia sẻ',
         href: '/admin/globals/share-link',
       },
+      {
+        slug: 'banner',
+        type: EntityType.global,
+        label: 'Banner',
+        href: '/admin/globals/banner',
+      },
     ],
     label: 'Quản lí chung',
   },

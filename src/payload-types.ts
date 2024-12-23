@@ -130,6 +130,7 @@ export interface User {
   gender?: ('male' | 'female') | null;
   age?: number | null;
   city?: string | null;
+  firebaseKey?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -337,6 +338,7 @@ export interface UsersSelect<T extends boolean = true> {
   gender?: T;
   age?: T;
   city?: T;
+  firebaseKey?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -504,6 +506,7 @@ export interface Banner {
   bannerItems?:
     | {
         banner: string | Media;
+        link: string;
         id?: string | null;
       }[]
     | null;
@@ -567,6 +570,7 @@ export interface BannerSelect<T extends boolean = true> {
     | T
     | {
         banner?: T;
+        link?: T;
         id?: T;
       };
   updatedAt?: T;

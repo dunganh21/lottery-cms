@@ -63,3 +63,11 @@ export const validateEmail = (value: any) => {
 
   return true
 }
+
+export const validateAge = (value: any) => {
+  if (!value) return true
+  if (Array.isArray(value)) return 'Age must be a single number'
+
+  if (value < 18 || value > 100) return 'Tuổi phải nằm trong khoảng từ 18 đến 100'
+  return true
+}

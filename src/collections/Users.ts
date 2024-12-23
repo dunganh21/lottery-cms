@@ -1,7 +1,7 @@
 import { UserRole } from '@/types/User'
 import type { CollectionConfig } from 'payload'
 import { isRoot } from './access/access-right'
-import { validateEmail } from '@/utils/validate'
+import { validateAge, validateEmail } from '@/utils/validate'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -77,11 +77,17 @@ export const Users: CollectionConfig = {
       name: 'age',
       type: 'number',
       label: 'Tuổi',
+      validate: validateAge,
     },
     {
       name: 'city',
       type: 'text',
       label: 'Tỉnh/Thành phố',
+    },
+    {
+      name: 'firebaseKey',
+      type: 'text',
+      label: 'Firebase Key',
     },
   ],
   hooks: {

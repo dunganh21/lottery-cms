@@ -1,3 +1,4 @@
+import { validateUrl } from '@/utils/validate'
 import type { GlobalConfig } from 'payload'
 
 export const BannerGlobal: GlobalConfig = {
@@ -24,6 +25,13 @@ export const BannerGlobal: GlobalConfig = {
           required: true,
           label: 'Ảnh banner',
           relationTo: 'media',
+        },
+        {
+          name: 'link',
+          type: 'text',
+          required: true,
+          label: 'Link',
+          validate: validateUrl,
         },
       ],
     },
