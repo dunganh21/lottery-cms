@@ -1,7 +1,8 @@
 import type { CollectionConfig } from 'payload'
-import { loggedIn, notGuest } from './access/access-right'
+import { isAdmin, loggedIn, notGuest } from './access/access-right'
 import { Notification as NotificationType } from '../payload-types'
 import { validateUrl } from '@/utils/validate'
+import _ from 'lodash'
 
 export const Notification: CollectionConfig = {
   slug: 'notification',
@@ -11,16 +12,16 @@ export const Notification: CollectionConfig = {
   },
 
   admin: {
-    useAsTitle: 'content',
+    useAsTitle: 'title',
     defaultColumns: ['title', 'content', 'pushType', 'pushTimeDate', 'pushTimeHour'],
     hideAPIURL: true,
     group: 'Thông báo',
   },
   access: {
     read: () => true,
-    create: notGuest,
-    update: notGuest,
-    delete: notGuest,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -86,22 +87,20 @@ export const Notification: CollectionConfig = {
     },
   ],
   hooks: {
-    // afterRead: [
-    //   async ({ doc }: { doc: NotificationType }) => {
-    //     let pushTime = ''
-    //     if (doc.pushType === 'once') {
-    //       pushTime = doc.pushTimeDate || ''
-    //     } else {
-    //       pushTime = doc.pushTimeHour || ''
-    //     }
-    //     const { pushType, id } = doc
-    //     return {
-    //       pushType,
-    //       pushTime,
-    //       id,
-    //     }
-    //   },
-    // ],
+    afterRead: [
+      async ({ doc }: { doc: NotificationType }) => {
+        let pushTime = ''
+        if (doc.pushType === 'once') {
+          pushTime = doc.pushTimeDate || ''
+        } else {
+          pushTime = doc.pushTimeHour || ''
+        }
+        return {
+          ..._.omit(doc, ['pushTimeDate', 'pushTimeHour']),
+          pushTime,
+        }
+      },
+    ],
   },
   timestamps: true,
 }

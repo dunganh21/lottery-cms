@@ -12,3 +12,7 @@ export const notGuest: Access = ({ req: { user } }) => {
 export const isRoot: Access = ({ req: { user } }) => {
   return Boolean(user) && user?.role === UserRole.Root
 }
+
+export const isAdmin: Access = ({ req: { user } }) => {
+  return Boolean(user) && [UserRole.Moderator, UserRole.Root].includes(user?.role as UserRole)
+}
