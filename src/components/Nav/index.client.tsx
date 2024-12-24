@@ -92,6 +92,12 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Banner',
         href: '/admin/globals/banner',
       },
+      {
+        slug: 'support',
+        type: EntityType.global,
+        label: 'Hỗ trợ',
+        href: '/admin/globals/support',
+      },
     ],
     label: 'Quản lí chung',
   },

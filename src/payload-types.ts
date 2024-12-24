@@ -42,6 +42,7 @@ export interface Config {
     'about-us': AboutUs;
     'share-link': ShareLink;
     banner: Banner;
+    support: Support;
   };
   globalsSelect: {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
@@ -49,6 +50,7 @@ export interface Config {
     'about-us': AboutUsSelect<false> | AboutUsSelect<true>;
     'share-link': ShareLinkSelect<false> | ShareLinkSelect<true>;
     banner: BannerSelect<false> | BannerSelect<true>;
+    support: SupportSelect<false> | SupportSelect<true>;
   };
   locale: null;
   user: User & {
@@ -515,6 +517,17 @@ export interface Banner {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support".
+ */
+export interface Support {
+  id: string;
+  content: string;
+  link: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
@@ -573,6 +586,17 @@ export interface BannerSelect<T extends boolean = true> {
         link?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support_select".
+ */
+export interface SupportSelect<T extends boolean = true> {
+  content?: T;
+  link?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
