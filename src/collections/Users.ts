@@ -32,6 +32,7 @@ export const Users: CollectionConfig = {
       requireEmail: false,
       requireUsername: true,
     },
+    maxLoginAttempts: 0,
   },
   fields: [
     {
