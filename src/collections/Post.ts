@@ -123,8 +123,9 @@ export const Posts: CollectionConfig = {
             title: doc.title,
             id: doc.id,
             authorName: doc.author?.username,
-            authorAvatar: doc.author?.avatar?.thumbnailURL,
             thumbnail: doc.thumbnail?.thumbnailURL,
+            createdAt: doc.createdAt,
+            updatedAt: doc.updatedAt,
           }
         } else {
           const { user, payload } = req
@@ -140,12 +141,13 @@ export const Posts: CollectionConfig = {
             title: doc.title,
             id: doc.id,
             authorName: doc.author?.username,
-            authorAvatar: doc.author?.avatar?.thumbnailURL,
             thumbnail: doc.thumbnail?.thumbnailURL,
             content: doc.htmlContent,
             youtubeLink: doc.youtubeLink,
             tags: (doc.tags || []).map((tag: any) => tag.label),
             isFollowed: postSubscribesCount.totalDocs > 0,
+            createdAt: doc.createdAt,
+            updatedAt: doc.updatedAt,
           }
         }
       },
