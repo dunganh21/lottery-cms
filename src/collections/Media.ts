@@ -29,9 +29,9 @@ export const Media: CollectionConfig = {
         position: 'centre',
       },
     ],
-    adminThumbnail: ({ doc }: any) => {
-      return `${process.env.PUBLIC_ASSETS_URL}/${doc.filename}?${new Date().getTime()}`
-    },
+    // adminThumbnail: ({ doc }: any) => {
+    //   return `${process.env.PUBLIC_ASSETS_URL}/${doc.filename}?${new Date().getTime()}`
+    // },
     mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
   },
   fields: [
