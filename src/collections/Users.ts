@@ -111,7 +111,7 @@ export const Users: CollectionConfig = {
           } else {
             return {
               ...doc,
-              fullName: `${_.capitalize(user?.role as string)}_${doc.id.slice(0, 4)}`,
+              fullName: `${_.capitalize(doc?.role as string)}_${doc.id.slice(0, 4)}`,
             }
           }
         }

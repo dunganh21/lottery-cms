@@ -5,6 +5,7 @@ import { lexicalHTML } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 import { notGuest } from './access/access-right'
 import { formatSlug } from './hooks/formatSlug'
+import _ from 'lodash'
 
 export const Posts: CollectionConfig = {
   slug: 'post',
@@ -147,16 +148,13 @@ export const Posts: CollectionConfig = {
           })
 
           return {
-            title: doc.title,
-            id: doc.id,
+            ..._.pick(doc, ['title', 'id', 'youtubeLink', 'createdAt', 'updatedAt']),
             authorName: doc.author?.fullName || '',
             thumbnail: doc.thumbnail?.thumbnailURL,
             content: doc.htmlContent,
-            youtubeLink: doc.youtubeLink,
+
             tags: (doc.tags || []).map((tag: any) => tag.label),
             isFollowed: postSubscribesCount.totalDocs > 0,
-            createdAt: doc.createdAt,
-            updatedAt: doc.updatedAt,
           }
         }
       },
