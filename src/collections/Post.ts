@@ -10,7 +10,7 @@ export const Posts: CollectionConfig = {
   slug: 'post',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'tags', 'rawContent', 'author', 'createdAt'],
+    defaultColumns: ['title', 'tags', 'author', 'createdAt'],
 
     livePreview: {
       url: ({ data }) => {
@@ -120,14 +120,18 @@ export const Posts: CollectionConfig = {
     afterRead: [
       async ({ doc, findMany, req }) => {
         if (req.payloadAPI === 'local') {
-          return doc
+          if (findMany) {
+            return { ...doc, author: { fullName: doc.author?.fullName || '' } }
+          } else {
+            return doc
+          }
         }
 
         if (findMany) {
           return {
             title: doc.title,
             id: doc.id,
-            authorName: doc.author?.username,
+            authorName: doc.author?.fullName || '',
             thumbnail: doc.thumbnail?.thumbnailURL,
             createdAt: doc.createdAt,
             updatedAt: doc.updatedAt,
@@ -145,7 +149,7 @@ export const Posts: CollectionConfig = {
           return {
             title: doc.title,
             id: doc.id,
-            authorName: doc.author?.username,
+            authorName: doc.author?.fullName || '',
             thumbnail: doc.thumbnail?.thumbnailURL,
             content: doc.htmlContent,
             youtubeLink: doc.youtubeLink,

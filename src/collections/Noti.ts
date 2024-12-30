@@ -1,8 +1,7 @@
-import type { CollectionConfig } from 'payload'
-import { isAdmin, loggedIn, notGuest } from './access/access-right'
-import { Notification as NotificationType } from '../payload-types'
 import { validateUrl } from '@/utils/validate'
 import _ from 'lodash'
+import type { CollectionConfig } from 'payload'
+import { isAdmin } from './access/access-right'
 
 export const Notification: CollectionConfig = {
   slug: 'notification',

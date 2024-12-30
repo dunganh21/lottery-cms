@@ -2,6 +2,7 @@ import { UserRole } from '@/types/User'
 import type { CollectionConfig } from 'payload'
 import { isRoot } from './access/access-right'
 import { validateAge, validateEmail } from '@/utils/validate'
+import _ from 'lodash'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -10,9 +11,10 @@ export const Users: CollectionConfig = {
     plural: 'Người dùng',
   },
   admin: {
-    useAsTitle: 'username',
+    useAsTitle: 'fullName',
     // @ts-ignore
     group: 'Tài nguyên',
+    defaultColumns: ['fullName', 'email', 'role', 'createdAt'],
   },
 
   access: {
@@ -66,6 +68,11 @@ export const Users: CollectionConfig = {
       },
     },
     {
+      name: 'fullName',
+      type: 'text',
+      label: 'Họ tên',
+    },
+    {
       name: 'gender',
       type: 'select',
       options: [
@@ -94,14 +101,19 @@ export const Users: CollectionConfig = {
   hooks: {
     afterRead: [
       async ({ req: { user }, doc }) => {
-        // Not logged in - only allow reading writer and above roles
-        if (!user && [UserRole.Guest, UserRole.User].includes(doc.role)) {
-          return null
-        }
-
-        // Logged in - allow reading writer and above roles, plus own user info
-        if (user && [UserRole.Guest, UserRole.User].includes(doc.role) && doc.id !== user.id) {
-          return null
+        // Generate default name for low privilege users without fullName
+        if (!doc.fullName) {
+          if ([UserRole.Guest, UserRole.User].includes(doc.role)) {
+            return {
+              ...doc,
+              fullName: `Guest_${doc.id.slice(0, 4)}`,
+            }
+          } else {
+            return {
+              ...doc,
+              fullName: `${_.capitalize(user?.role as string)}_${doc.id.slice(0, 4)}`,
+            }
+          }
         }
 
         return doc

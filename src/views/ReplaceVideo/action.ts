@@ -1,5 +1,4 @@
 import { Endpoint } from 'payload'
-import { addDataAndFileToRequest } from '@payloadcms/next/utilities'
 
 export const ReplaceVideoEndpoint: Endpoint = {
   path: '/replace-video',
@@ -15,9 +14,6 @@ export const ReplaceVideoEndpoint: Endpoint = {
     const url = new URL(req.url as string)
     const beforeLink = url.searchParams.get('beforeLink') as string
     const afterLink = url.searchParams.get('afterLink') as string
-
-    console.log('beforeLink:', beforeLink)
-    console.log('afterLink:', afterLink)
 
     const data = {
       beforeLink,

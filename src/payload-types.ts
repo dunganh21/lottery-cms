@@ -129,6 +129,7 @@ export interface Post {
 export interface User {
   id: string;
   role?: ('guest' | 'user' | 'writer' | 'moderator' | 'root') | null;
+  fullName?: string | null;
   gender?: ('male' | 'female') | null;
   age?: number | null;
   city?: string | null;
@@ -335,6 +336,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  fullName?: T;
   gender?: T;
   age?: T;
   city?: T;
