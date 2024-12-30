@@ -54,4 +54,14 @@ export const Media: CollectionConfig = {
       },
     },
   ],
+  hooks: {
+    beforeOperation: [
+      ({ req, operation }) => {
+        if ((operation === 'create' || operation === 'update') && req.file) {
+          const currentFileName = req.file.name
+          req.file.name = currentFileName.replaceAll(' ', '-')
+        }
+      },
+    ],
+  },
 }

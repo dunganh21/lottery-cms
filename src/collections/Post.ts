@@ -116,8 +116,13 @@ export const Posts: CollectionConfig = {
         }
       },
     ],
+
     afterRead: [
       async ({ doc, findMany, req }) => {
+        if (req.payloadAPI === 'local') {
+          return doc
+        }
+
         if (findMany) {
           return {
             title: doc.title,

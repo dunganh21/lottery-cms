@@ -88,7 +88,10 @@ export const Notification: CollectionConfig = {
   ],
   hooks: {
     afterRead: [
-      async ({ doc }: { doc: NotificationType }) => {
+      async ({ doc, req }) => {
+        if (req.payloadAPI === 'local') {
+          return doc
+        }
         let pushTime = ''
         if (doc.pushType === 'once') {
           pushTime = doc.pushTimeDate || ''
