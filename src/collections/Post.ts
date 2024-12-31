@@ -178,8 +178,20 @@ export const Posts: CollectionConfig = {
             postIds: true,
           },
         })
-        if (!postSubscribes.docs.length && !postSubscribes.docs[0].postIds?.length) {
-          return Response.json([])
+
+        if (!postSubscribes.docs.length || !postSubscribes.docs[0]?.postIds?.length) {
+          return Response.json({
+            docs: [],
+            totalDocs: 0,
+            limit: 100,
+            totalPages: 1,
+            page: 1,
+            pagingCounter: 1,
+            hasPrevPage: false,
+            hasNextPage: false,
+            prevPage: null,
+            nextPage: null,
+          })
         }
         const postAlreadyPopulated = postSubscribes.docs[0].postIds || []
         const postFormat = postAlreadyPopulated.reduce((acc, post) => {

@@ -53,6 +53,14 @@ export default buildConfig({
         },
       },
     },
+    meta: {
+      titleSuffix: ' - Thần sổ xố',
+      icons: [
+        {
+          url: 'https://bachtuocso789.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.6b7d4694.png&w=128&q=75',
+        },
+      ],
+    },
   },
 
   collections: [Posts, Notification, Categories, Users, Media, PostSub],
