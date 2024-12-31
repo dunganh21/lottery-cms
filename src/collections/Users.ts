@@ -106,12 +106,12 @@ export const Users: CollectionConfig = {
           if ([UserRole.Guest, UserRole.User].includes(doc.role)) {
             return {
               ...doc,
-              fullName: `Guest_${doc.id.slice(0, 4)}`,
+              fullName: `Guest_${doc.id.slice(-4)}`,
             }
           } else {
             return {
               ...doc,
-              fullName: `${_.capitalize(doc?.role as string)}_${doc.id.slice(0, 4)}`,
+              fullName: `${_.capitalize(doc?.role as string)}_${doc.id.slice(-4)}`,
             }
           }
         }
