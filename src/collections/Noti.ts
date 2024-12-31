@@ -103,6 +103,27 @@ export const Notification: CollectionConfig = {
         }
       },
     ],
+    afterChange: [
+      async ({ doc }) => {
+        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/v1/notification/schedule`, {
+          method: 'POST',
+          body: JSON.stringify(doc),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      },
+    ],
+    beforeDelete: [
+      async ({ id }) => {
+        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/v1/notification/schedule/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      },
+    ],
   },
   timestamps: true,
 }
