@@ -121,11 +121,7 @@ export const Posts: CollectionConfig = {
     afterRead: [
       async ({ doc, findMany, req }) => {
         if (req.payloadAPI === 'local') {
-          if (findMany) {
-            return { ...doc, author: { fullName: doc.author?.fullName || '' } }
-          } else {
-            return doc
-          }
+          return doc
         }
 
         if (findMany) {
