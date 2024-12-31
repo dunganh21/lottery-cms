@@ -1,11 +1,11 @@
-import { Post } from '@/payload-types'
+import { Media, User } from '@/payload-types'
 import { UserRole } from '@/types/User'
 import { validateYoutubeUrl } from '@/utils/validate'
 import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import _ from 'lodash'
 import type { CollectionConfig } from 'payload'
 import { notGuest } from './access/access-right'
 import { formatSlug } from './hooks/formatSlug'
-import _ from 'lodash'
 
 export const Posts: CollectionConfig = {
   slug: 'post',
@@ -182,16 +182,31 @@ export const Posts: CollectionConfig = {
             postIds: true,
           },
         })
-
         if (!postSubscribes.docs.length && !postSubscribes.docs[0].postIds?.length) {
           return Response.json([])
         }
+        const postAlreadyPopulated = postSubscribes.docs[0].postIds || []
+        const postFormat = postAlreadyPopulated.reduce((acc, post) => {
+          if (typeof post === 'string') {
+            return acc
+          }
 
-        const postFormat = postSubscribes.docs[0].postIds as Post[]
+          const postAdded = {
+            ..._.pick(post, ['title', 'id', 'youtubeLink', 'createdAt', 'updatedAt']),
+            authorName: (post.author as User)?.fullName || '',
+            thumbnail: (post.thumbnail as Media)?.thumbnailURL,
+            content: post.htmlContent,
+            tags: (post.tags || []).map((tag: any) => tag.label),
+            isFollowed: true,
+          }
+
+          return [...acc, postAdded]
+        }, [] as any[])
+
         return Response.json({
           docs: postFormat,
           totalDocs: postFormat.length,
-          limit: postFormat.length,
+          limit: 100,
           totalPages: 1,
           page: 1,
           pagingCounter: 1,
