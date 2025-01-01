@@ -105,7 +105,7 @@ export const Notification: CollectionConfig = {
     ],
     afterChange: [
       async ({ doc }) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/v1/notification/schedule`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/notification/schedule`, {
           method: 'POST',
           body: JSON.stringify(doc),
           headers: {
@@ -116,7 +116,7 @@ export const Notification: CollectionConfig = {
     ],
     beforeDelete: [
       async ({ id }) => {
-        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/api/v1/notification/schedule/${id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/notification/schedule/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
