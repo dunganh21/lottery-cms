@@ -1,4 +1,4 @@
-import { validateFacebookUrl, validateYoutubeUrl } from '@/utils/validate'
+import { validateUrl, validateYoutubeUrl } from '@/utils/validate'
 import { GlobalConfig } from 'payload'
 
 const SoiCau: GlobalConfig = {
@@ -26,7 +26,7 @@ const SoiCau: GlobalConfig = {
       type: 'text',
       label: 'URL video Facebook',
       required: true,
-      validate: validateFacebookUrl,
+      validate: validateUrl,
     },
   ],
 }
