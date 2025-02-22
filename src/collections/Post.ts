@@ -1,7 +1,15 @@
+import CodeBlockHTMLConverter from '@/converters/CodeBlockHTMLConverter'
 import { Media, User } from '@/payload-types'
 import { UserRole } from '@/types/User'
 import { validateYoutubeUrl } from '@/utils/validate'
-import { lexicalHTML } from '@payloadcms/richtext-lexical'
+import {
+  consolidateHTMLConverters,
+  convertLexicalToHTML,
+  defaultEditorConfig,
+  defaultEditorFeatures,
+  HTMLConverterFeature,
+  sanitizeServerEditorConfig,
+} from '@payloadcms/richtext-lexical'
 import _ from 'lodash'
 import type { CollectionConfig } from 'payload'
 import { notGuest } from './access/access-right'
@@ -89,8 +97,15 @@ export const Posts: CollectionConfig = {
       required: true,
       validate: validateYoutubeUrl,
     },
+    {
+      name: 'htmlContent',
+      label: 'Nội dung HTML',
+      type: 'text',
+      required: true,
+      hidden: true,
+    },
 
-    lexicalHTML('rawContent', { name: 'htmlContent', hidden: true, storeInDB: true }),
+    // lexicalHTML('rawContent', { name: 'htmlContent', hidden: true, storeInDB: true }),
     {
       name: 'slug',
       type: 'text',
@@ -108,6 +123,28 @@ export const Posts: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ req, data }) => {
+        const sanitizedEditorConfig = await sanitizeServerEditorConfig(
+          {
+            ...defaultEditorConfig,
+            features: [
+              ...defaultEditorFeatures,
+              HTMLConverterFeature({
+                converters: ({ defaultConverters }) => [
+                  ...defaultConverters,
+                  CodeBlockHTMLConverter,
+                ],
+              }),
+            ],
+          },
+          req.payload.config,
+        )
+        const html = await convertLexicalToHTML({
+          converters: consolidateHTMLConverters({ editorConfig: sanitizedEditorConfig }),
+          data: data.rawContent,
+          req,
+        })
+        Object.assign(data, { htmlContent: html })
+
         if (!data.author && req.user?.id) {
           // Add user id thành author sau khi save
           return {

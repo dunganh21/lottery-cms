@@ -117,7 +117,7 @@ export interface Post {
     [k: string]: unknown;
   };
   youtubeLink: string;
-  htmlContent?: string | null;
+  htmlContent: string;
   slug?: string | null;
   updatedAt: string;
   createdAt: string;

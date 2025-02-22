@@ -1,6 +1,7 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import {
+  BlocksFeature,
   FixedToolbarFeature,
   HTMLConverterFeature,
   lexicalEditor,
@@ -20,14 +21,20 @@ import { Users } from './collections/Users'
 import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
 
 import PostSub from './collections/Post-sub'
+import CodeBlockHTMLConverter from './converters/CodeBlockHTMLConverter'
 import AboutUs from './globals/AboutUs'
+import { BannerGlobal } from './globals/Banner'
 import ShareLink from './globals/ShareLink'
 import SoiCau from './globals/SoiCau'
-import { BannerGlobal } from './globals/Banner'
 import Support from './globals/Support'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+// Add language options
+const languages = {
+  html: 'HTML',
+}
 
 export default buildConfig({
   debug: true,
@@ -69,8 +76,29 @@ export default buildConfig({
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [
       ...defaultFeatures,
+      BlocksFeature({
+        blocks: [
+          {
+            slug: 'code',
+            fields: [
+              {
+                name: 'code',
+                type: 'code',
+                admin: {
+                  language: 'html',
+                  components: {
+                    Field: '/components/CodeComponent', // You'll need to create this component
+                  },
+                },
+              },
+            ],
+          },
+        ],
+      }),
       FixedToolbarFeature(),
-      HTMLConverterFeature(),
+      HTMLConverterFeature({
+        converters: ({ defaultConverters }) => [...defaultConverters, CodeBlockHTMLConverter],
+      }),
     ],
   }),
 
