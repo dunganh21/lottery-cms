@@ -31,11 +31,11 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Tạo bài viết',
         href: '/admin/collections/post/create',
       },
-      {
-        slug: 'categories',
-        type: EntityType.collection,
-        label: 'Danh mục',
-      },
+      // {
+      //   slug: 'categories',
+      //   type: EntityType.collection,
+      //   label: 'Danh mục',
+      // },
     ],
     label: 'Bài viết',
   },

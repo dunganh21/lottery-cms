@@ -77,13 +77,13 @@ export const Posts: CollectionConfig = {
       relationTo: 'media',
       required: true,
     },
-    {
-      name: 'tags',
-      label: 'Chủ đề',
-      type: 'relationship',
-      relationTo: 'categories',
-      hasMany: true,
-    },
+    // {
+    //   name: 'tags',
+    //   label: 'Chủ đề',
+    //   type: 'relationship',
+    //   relationTo: 'categories',
+    //   hasMany: true,
+    // },
     {
       name: 'rawContent',
       label: 'Nội dung',

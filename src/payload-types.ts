@@ -13,7 +13,6 @@ export interface Config {
   collections: {
     post: Post;
     notification: Notification;
-    categories: Category;
     users: User;
     media: Media;
     'post-subscribes': PostSubscribe;
@@ -25,7 +24,6 @@ export interface Config {
   collectionsSelect: {
     post: PostSelect<false> | PostSelect<true>;
     notification: NotificationSelect<false> | NotificationSelect<true>;
-    categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     'post-subscribes': PostSubscribesSelect<false> | PostSubscribesSelect<true>;
@@ -100,7 +98,6 @@ export interface Post {
   title: string;
   author?: (string | null) | User;
   thumbnail: string | Media;
-  tags?: (string | Category)[] | null;
   rawContent: {
     root: {
       type: string;
@@ -184,16 +181,6 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  label: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "notification".
  */
 export interface Notification {
@@ -232,10 +219,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'notification';
         value: string | Notification;
-      } | null)
-    | ({
-        relationTo: 'categories';
-        value: string | Category;
       } | null)
     | ({
         relationTo: 'users';
@@ -299,7 +282,6 @@ export interface PostSelect<T extends boolean = true> {
   title?: T;
   author?: T;
   thumbnail?: T;
-  tags?: T;
   rawContent?: T;
   youtubeLink?: T;
   htmlContent?: T;
@@ -318,15 +300,6 @@ export interface NotificationSelect<T extends boolean = true> {
   pushType?: T;
   pushTimeDate?: T;
   pushTimeHour?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  label?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -15,7 +15,7 @@ import { Media } from './collections/Media'
 import { Posts } from './collections/Post'
 import { Faqs } from './globals/Faq'
 
-import { Categories } from './collections/Categories'
+// import { Categories } from './collections/Categories'
 import { Notification } from './collections/Noti'
 import { Users } from './collections/Users'
 import { ReplaceVideoEndpoint } from './views/ReplaceVideo/action'
@@ -70,7 +70,7 @@ export default buildConfig({
     },
   },
 
-  collections: [Posts, Notification, Categories, Users, Media, PostSub],
+  collections: [Posts, Notification, Users, Media, PostSub],
   globals: [Faqs, SoiCau, AboutUs, ShareLink, BannerGlobal, Support],
 
   editor: lexicalEditor({
