@@ -19,7 +19,7 @@ export const Posts: CollectionConfig = {
   slug: 'post',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'tags', 'author', 'createdAt'],
+    defaultColumns: ['title', 'author', 'createdAt'],
 
     livePreview: {
       url: ({ data }) => {
@@ -186,7 +186,7 @@ export const Posts: CollectionConfig = {
             thumbnail: doc.thumbnail?.thumbnailURL,
             content: doc.htmlContent,
 
-            tags: (doc.tags || []).map((tag: any) => tag.label),
+            // tags: (doc.tags || []).map((tag: any) => tag.label),
             isFollowed: postSubscribesCount.totalDocs > 0,
           }
         }
@@ -241,7 +241,7 @@ export const Posts: CollectionConfig = {
             authorName: (post.author as User)?.fullName || '',
             thumbnail: (post.thumbnail as Media)?.thumbnailURL,
             content: post.htmlContent,
-            tags: (post.tags || []).map((tag: any) => tag.label),
+            // tags: (post.tags || []).map((tag: any) => tag.label),
             isFollowed: true,
           }
 
