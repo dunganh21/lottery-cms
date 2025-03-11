@@ -1,7 +1,7 @@
 import { UserRole } from '@/types/User'
 import type { CollectionConfig } from 'payload'
 import { isRoot } from './access/access-right'
-import { validateAge, validateEmail } from '@/utils/validate'
+import { validateAge, validateEmail, validatePhoneNumber } from '@/utils/validate'
 import _ from 'lodash'
 
 export const Users: CollectionConfig = {
@@ -76,6 +76,7 @@ export const Users: CollectionConfig = {
       name: 'phoneNumber',
       type: 'text',
       label: 'Số điện thoại',
+      validate: validatePhoneNumber,
     },
     {
       name: 'gender',

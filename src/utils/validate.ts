@@ -71,3 +71,17 @@ export const validateAge = (value: any) => {
   if (value < 18 || value > 100) return 'Tuổi phải nằm trong khoảng từ 18 đến 100'
   return true
 }
+
+export const validatePhoneNumber = (value: any) => {
+  if (!value) return true // Cho phép trường này trống
+
+  // Regex cho số điện thoại quốc tế (E.164 format)
+  // Cho phép dấu + ở đầu, theo sau là 7-15 chữ số
+  const phoneRegex = /^\+[1-9]\d{6,14}$/
+
+  if (phoneRegex.test(value)) {
+    return true
+  }
+
+  return 'Vui lòng nhập số điện thoại hợp lệ theo định dạng quốc tế (Ví dụ: +84xxxxxxxxx, +1xxxxxxxxxx)'
+}
