@@ -75,13 +75,14 @@ export const validateAge = (value: any) => {
 export const validatePhoneNumber = (value: any) => {
   if (!value) return true // Cho phép trường này trống
 
-  // Regex cho số điện thoại quốc tế (E.164 format)
-  // Cho phép dấu + ở đầu, theo sau là 7-15 chữ số
-  const phoneRegex = /^\+[1-9]\d{6,14}$/
+  // Regex cho phép cả hai định dạng:
+  // 1. Bắt đầu bằng 0, theo sau là 9-10 chữ số
+  // 2. Bắt đầu bằng +, theo sau là 7-15 chữ số
+  const phoneRegex = /^(0\d{9,10}|\+[1-9]\d{6,14})$/
 
   if (phoneRegex.test(value)) {
     return true
   }
 
-  return 'Vui lòng nhập số điện thoại hợp lệ theo định dạng quốc tế (Ví dụ: +84xxxxxxxxx, +1xxxxxxxxxx)'
+  return 'Vui lòng nhập số điện thoại hợp lệ (Ví dụ: 0xxxxxxxxx hoặc +84xxxxxxxxx)'
 }
