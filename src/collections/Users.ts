@@ -73,6 +73,11 @@ export const Users: CollectionConfig = {
       label: 'Họ tên',
     },
     {
+      name: 'phoneNumber',
+      type: 'text',
+      label: 'Số điện thoại',
+    },
+    {
       name: 'gender',
       type: 'select',
       options: [

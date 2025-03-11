@@ -27,6 +27,7 @@ import { BannerGlobal } from './globals/Banner'
 import ShareLink from './globals/ShareLink'
 import SoiCau from './globals/SoiCau'
 import Support from './globals/Support'
+import Popup from './globals/Popup'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -71,7 +72,7 @@ export default buildConfig({
   },
 
   collections: [Posts, Notification, Users, Media, PostSub],
-  globals: [Faqs, SoiCau, AboutUs, ShareLink, BannerGlobal, Support],
+  globals: [Faqs, SoiCau, AboutUs, ShareLink, BannerGlobal, Support, Popup],
 
   editor: lexicalEditor({
     features: ({ defaultFeatures }) => [

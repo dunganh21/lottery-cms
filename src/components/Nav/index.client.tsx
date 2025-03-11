@@ -98,6 +98,12 @@ const DEFAULT_GROUPS: CustomNavGroup[] = [
         label: 'Hỗ trợ',
         href: '/admin/globals/support',
       },
+      {
+        slug: 'popup',
+        type: EntityType.global,
+        label: 'Popup',
+        href: '/admin/globals/popup',
+      },
     ],
     label: 'Quản lí chung',
   },

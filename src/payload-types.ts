@@ -41,6 +41,7 @@ export interface Config {
     'share-link': ShareLink;
     banner: Banner;
     support: Support;
+    popup: Popup;
   };
   globalsSelect: {
     faqs: FaqsSelect<false> | FaqsSelect<true>;
@@ -49,6 +50,7 @@ export interface Config {
     'share-link': ShareLinkSelect<false> | ShareLinkSelect<true>;
     banner: BannerSelect<false> | BannerSelect<true>;
     support: SupportSelect<false> | SupportSelect<true>;
+    popup: PopupSelect<false> | PopupSelect<true>;
   };
   locale: null;
   user: User & {
@@ -127,6 +129,7 @@ export interface User {
   id: string;
   role?: ('guest' | 'user' | 'writer' | 'moderator' | 'root') | null;
   fullName?: string | null;
+  phoneNumber?: string | null;
   gender?: ('male' | 'female') | null;
   age?: number | null;
   city?: string | null;
@@ -310,6 +313,7 @@ export interface NotificationSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
   fullName?: T;
+  phoneNumber?: T;
   gender?: T;
   age?: T;
   city?: T;
@@ -499,6 +503,38 @@ export interface Support {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup".
+ */
+export interface Popup {
+  id: string;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  htmlContent?: string | null;
+  image?: (string | null) | Media;
+  link?: string | null;
+  buttonText?: string | null;
+  displayDate?: string | null;
+  frequency?: ('every_visit' | 'once_per_day' | 'once_per_week' | 'once_per_month' | 'once_per_year' | 'once') | null;
+  isActive?: boolean | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs_select".
  */
 export interface FaqsSelect<T extends boolean = true> {
@@ -568,6 +604,24 @@ export interface BannerSelect<T extends boolean = true> {
 export interface SupportSelect<T extends boolean = true> {
   content?: T;
   link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "popup_select".
+ */
+export interface PopupSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  htmlContent?: T;
+  image?: T;
+  link?: T;
+  buttonText?: T;
+  displayDate?: T;
+  frequency?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
