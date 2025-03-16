@@ -95,6 +95,20 @@ const Popup: GlobalConfig = {
       defaultValue: false,
     },
   ],
+  hooks: {
+    afterRead: [
+      async ({ doc, req }) => {
+        if (req.payloadAPI === 'local') {
+          return doc
+        }
+
+        return {
+          ...doc,
+          image: doc.image?.thumbnailURL,
+        }
+      },
+    ],
+  },
 }
 
 export default Popup
